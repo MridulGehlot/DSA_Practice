@@ -1,0 +1,10 @@
+create table department
+(
+code int primary key,
+name char(35) not null unique
+)
+insert into department values(101,"Sales")
+
+select * from department order by name
+
+delete from department where code=103

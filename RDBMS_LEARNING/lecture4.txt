@@ -1,0 +1,23 @@
+create table employee
+(
+emp_id int primary key,
+first_name char(20) not null,
+last_name char(20) not null,
+gender char(1) not null,
+date_of_birth date not null,
+is_indian boolean not null,
+department_code int not null,
+contact_number char(15),
+foreign key (department_code) references department(code)
+)
+
+insert into employee 
+values(101,'Mridul','Gehlot','M','2005-01-27',true,101,'7828944257'),
+(102,'Mridul','Gehlot','M','2005-01-27',true,101,'7828944257'),
+(103,'Sanjay','Gehlot','M','1978-07-18',true,102,'9827514921'),
+(104,'Meena','Mishra','F','2003-11-14',false,103,'2134567890'),
+(105,'Suresh','Sharma','M','2000-01-22',true,102,'9827380316'),
+(106,'Tina','Joshi','F','2007-07-27',true,104,'9424892312'),
+(107,'Sunil','Gehlot','M','1998-08-07',false,101,'4567891320'),
+(108,'Neha','Sharma','F','2005-01-27',false,101,null),
+(109,'Nihal','Gehlot','M','1888-12-04',true,102,null)
