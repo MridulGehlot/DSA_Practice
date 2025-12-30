@@ -1,0 +1,22 @@
+where 
+>= and <=
+code=105 or code =110
+code between 105 and 110
+not
+not in between
+
+always use not ()
+
+where name like 'H%'    Starts with H
+where name like '%H'    Ends with H
+where name like '%H%'   cotains H
+
+where contact_number is null
+
+order by firtsPreference, SecondPreference
+
+select first_name,last_name,date_of_birth from employee where year(date_of_birth)=2005 and month(date_of_birth)=1;
+
+select * from employee where is_indian=true;
+
+select first_name,"Indian" as "Nationallity" from employee where is_indian=true;

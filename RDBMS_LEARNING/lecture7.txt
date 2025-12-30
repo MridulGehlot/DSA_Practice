@@ -1,0 +1,59 @@
+Sub Queries
+
+1. Get List of all Indian States
+- Find Code of India
+- Extract Records from state where country_code = ?
+- Or Better make use of Sub Query
+select * from state where country_code = (select code from country where name="India")
+
+2. Get List of all American States
+select * from state where country_code = (select code from country where name="USA")
+
+3. Get list of all Indian cities
+select code,name from city where state_code in (select code from state where country_code in (select code from country where name="India"))
+
+4. Get emp_id and name of all American employees
+select emp_id,first_name,last_name from employee where emp_id in (select emp_id from employee_address where city_code in (select code from city where state_code in (select code from country where name='USA')))
+
+5. Get emp_id and name of all Indian MALE employees
+select emp_id,first_name,last_name from employee where emp_id in
+(select emp_id from employee_address where city_code in 
+(select code from city where state_code in
+(select code from state where country_code in 
+(select code from country where name='India'
+)
+)
+)
+)and gender = 'M';
+
+6. Get emp_id and name of all American FEMALE employees
+select emp_id,first_name,last_name from employee where emp_id in
+(select emp_id from employee_address where city_code in 
+(select code from city where state_code in
+(select code from state where country_code in 
+(select code from country where name='USA'
+)
+)
+)
+) and gender = 'F';
+
+7. Get name of cities that has no employees
+select * from city where code not in (select city_code from employee_address where emp_id in (select emp_id from employee))
+
+8. Get emp_id and name of all employee whose addr is of only 2 lines
+select emp_id,first_name,last_name from employee where emp_id in 
+(select emp_id from employee_address where line3 is null)
+
+9. Get emp_id and name of all employee whose addr is of only 1 lines
+select emp_id,first_name,last_name from employee where emp_id in 
+(select emp_id from employee_address where line3 is null and line2 is null)
+
+10. Get emp_id and name of all employee whose addr is of only 2 lines and Country=India
+select emp_id,first_name,last_name from employee where emp_id in 
+(select emp_id from employee_address where line3 is null and city_code in 
+(select code from city where state_code in 
+(select code from state where country_code in 
+(select code from country where name='India')
+)
+)
+)

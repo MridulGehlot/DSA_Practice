@@ -1,0 +1,62 @@
+create table country
+(
+code int primary key,
+name char(50) not null unique
+);
+create table state
+(
+code int primary key,
+name char(50) not null,
+country_code int not null,
+foreign key (country_code) references country(code)
+);
+create table city
+(
+code int primary key,
+name char(50) not null,
+state_code int not null,
+foreign key (state_code) references state(code)
+);
+create table employee_address
+(
+emp_id int primary key,
+line1 varchar(80) not null,
+line2 varchar(80),
+line3 varchar(80),
+city_code int not null,
+pincode char(10) not null,
+foreign key (emp_id) references employee(emp_id)
+foreign key (city_code) references city(code)
+);
+
+insert into country values (1,'India');
+insert into country values (2,'USA');
+insert into country values(3,'France');
+insert into state values(1,'Madhya Pradesh',1);
+insert into state values(2,'Uttar Pradesh',1);
+insert into state values(3,'Telangana',1);
+insert into state values(4,'Odisha',1);
+insert into state values(5,'Rajasthan',1);
+insert into state values(6,'Texas',2);
+insert into state values(7,'California',2);
+insert into state values(8,'FRENCH_STATE',3);
+insert into city values(1,'Ujjain',1);
+insert into city values(2,'Indore',1);
+insert into city values(3,'Dewas',1);
+insert into city values(4,'Agar',4);
+insert into city values(5,'Jaipur',5);
+insert into city values(6,'Banglore',3);
+insert into city values(7,'Lucknow',2);
+insert into city values(8,'Austin',7);
+insert into city values(9,'San Fransisco',6);
+insert into city values(10,'Paris',8);
+
+insert into employee_address values(101,'16 MIG 2nd Indira Nagar','Agar Road','infront of milan Garden',1,'456006');
+insert into employee_address values(102,'Street view 52','Amsterdam Road',null,8,'US5500');
+insert into employee_address values(103,'Kalani Nagar','Chota Bangada','Airport Road',2,'456554');
+insert into employee_address values(104,'New Valley',null,null,9,'US4564');
+insert into employee_address values(105,'12 LIG','Pink Road','Pink City',5,'455990');
+insert into employee_address values(106,'99 HIG','Park Road','Milk Shop',6,'456778');
+insert into employee_address values(107,'Iffel Tower',null,null,10,'FRN101');
+insert into employee_address values(108,'Street View 56','Free wing','Red Town',8,'US5510');
+insert into employee_address values(109,'Badmash Gali',null,null,7,'454545');
