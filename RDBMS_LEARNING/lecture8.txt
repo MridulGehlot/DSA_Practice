@@ -1,0 +1,37 @@
+//Do All tasks of Lecture7 with joins
+3 Joins
+1) Cross Join
+2) Equi Join / Inner Join
+3) Natural Join
+
+#Natural Join
+Employee(emp_id pk) Employee_address(emp_id PK/FK)
+select * from employee natural join employee_address
+
+//wrong -> select * from employee natural join department
+
+//cross join -> select * from employee,department
+
+select * from employee,department where employee.department_code=department.code order by emp_id
+
+select employee.emp_id,employee.first_name,employee.last_name,employee.gender,employee.date_of_birth,employee.is_indian,employee.department_code,employee.contact_number,department.name from employee,department where employee.department_code=department.code order by emp_id
+
+select employee.emp_id,employee.first_name,employee.last_name,employee.gender,employee.date_of_birth,employee.is_indian,employee.contact_number,department.code,department.name,employee_address.line1,employee_address.line2,employee_address.line3 from employee,department,employee_address where employee.department_code=department.code and employee.emp_id=employee_address.emp_id order by emp_id
+//do above with inner join
+
+#Inner Join
+select * from employee inner join department on employee.department_code=department.code order by employee.emp_id
+
+select city.code,city.name,country.name from city,state,country where
+city.state_code=state.code and state.country_code=country.code order by city.code
+
+//This done with cross join try to do with inner join
+3. Get list of all Indian cities
+select city.code,city.name,country.name from city,state,country where
+city.state_code=state.code and state.country_code=country.code order by city.code
+//or
+select city.code,city.name,country.name from city,state,country where
+city.state_code=state.code and state.country_code=country.code and country.name="India" order by city.code
+//or with inner join
+select city.name,state.name,country.name from city inner join state on city.state_code=state.code inner join country on state.country_code=country.code
+order by city.code

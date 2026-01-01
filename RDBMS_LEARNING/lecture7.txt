@@ -38,9 +38,13 @@ select emp_id,first_name,last_name from employee where emp_id in
 ) and gender = 'F';
 
 7. Get name of cities that has no employees
+select * from city where code not in (select city_code from employee_address)
+//or
 select * from city where code not in (select city_code from employee_address where emp_id in (select emp_id from employee))
 
 8. Get emp_id and name of all employee whose addr is of only 2 lines
+select * from employee_address where line1 is not null and line2 is not null and line3 is null
+//or
 select emp_id,first_name,last_name from employee where emp_id in 
 (select emp_id from employee_address where line3 is null)
 

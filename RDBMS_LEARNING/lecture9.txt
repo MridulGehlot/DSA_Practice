@@ -1,0 +1,29 @@
+Left/Right/Full Outer Join
+
+//Last session Task use (Inner join) to extract data from all tables
+select emp.x/y/z, department.xyz, table.xyz from employee
+inner join department on x=x
+inner join table on x=x
+
+# Club (Employee + Non Employee)
+create table club
+(
+reference_number bigint primary key auto_increment,
+emp_id int,
+entry_date date not null,
+bill_amount decimal(10,2) not null,
+foreign key (emp_id) references employee(emp_id) 
+);
+
+#Inner Join  (Intersection)
+#Full outer Join (Union) MySQL Does Not Support
+Trick (Left) union all (Right)
+#Left Outer Join (Left + Common)
+#Right Outer Join (Right + Common)
+
+
+//Left Club k sare aagye right employee se sirf matching aaye
+select club.reference_number,club.emp_id,employee.first_name,employee.last_name,
+club.entry_date,club.bill_amount from club left outer join employee on club.emp_id=employee.emp_id
+
+//Left -> Right

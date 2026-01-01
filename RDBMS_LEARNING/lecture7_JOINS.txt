@@ -1,0 +1,46 @@
+Joins
+1. Get List of all Indian States
+select state.code,state.name from state inner join country on state.country_code=country.code where country.name="India"
+//and also working
+//or
+select s.code,s.name from state as s inner join country as c on s.country_code=c.code where c.name="India"
+
+2. Get List of all American States 
+3. Get list of all Indian cities
+select city.code,city.name from city inner join state on city.state_code=state.code
+inner join country on state.country_code=country.code where country.name="India"
+
+4. Get emp_id and name of all American employees
+select employee.emp_id,employee.first_name,employee.last_name from employee inner join
+employee_address on employee.emp_id=employee_address.emp_id inner join
+city on employee_address.city_code=city.code inner join
+state on city.state_code=state.code inner join
+country on state.country_code=country.code
+where country.name="USA"
+
+5. Get emp_id and name of all Indian MALE employees
+select employee.emp_id,employee.first_name,employee.last_name,employee.gender
+ from employee inner join
+employee_address on employee.emp_id=employee_address.emp_id inner join
+city on employee_address.city_code=city.code inner join
+state on city.state_code=state.code inner join
+country on state.country_code=country.code
+where country.name="India" and employee.gender='M'
+
+6. Get emp_id and name of all American FEMALE employees
+select employee.emp_id,employee.first_name,employee.last_name,employee.gender
+ from employee inner join
+employee_address on employee.emp_id=employee_address.emp_id inner join
+city on employee_address.city_code=city.code inner join
+state on city.state_code=state.code inner join
+country on state.country_code=country.code
+where country.name="USA" and employee.gender='F'
+
+7. Get name of cities that has no employees
+//cannot achieve this
+select city.code,city.name from city inner join employee_address on
+city.code=employee_address.city_code
+
+8. Get emp_id and name of all employee whose addr is of only 2 lines
+9. Get emp_id and name of all employee whose addr is of only 1 lines
+10. Get emp_id and name of all employee whose addr is of only 2 lines and Country=India
