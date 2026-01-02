@@ -1,0 +1,55 @@
+//VIEWS
+create view employee_view as (SQL)
+
+-> Views ke Through Insert/Update/Delete possible hai
+-> Provided Multiple Tables ka join na ho
+
+create view employee_view as
+select employee.emp_id as "EmployeeId",employee.first_name,employee.last_name,
+employee.gender,employee.date_of_birth,employee.is_indian,department.code as "Deprt Code",department.name as "Department",
+employee_address.line1,employee_address.line2,employee_address.line3,
+city.code as "City code",city.name as "City",state.code as "Staet code",state.name as "State",
+country.code as "Country code",country.name as "Country" from employee
+inner join department on employee.department_code=department.code
+inner join employee_address on employee_address.emp_id=employee.emp_id
+inner join city on employee_address.city_code=city.code
+inner join state on city.state_code=state.code
+inner join country on state.country_code=country.code
+
+select * from employee_view
+
+create table employee_attendance
+(
+emp_id int not null,
+date_of_attendance date not null,
+status char(1) not null,
+primary key(emp_id,date_of_attendance),
+foreign key(emp_id) references employee(emp_id)
+);
+insert into employee_attendance values(101,'2023-12-01','P');
+insert into employee_attendance values(101,'2023-12-02','P');
+insert into employee_attendance values(101,'2023-12-03','A');
+insert into employee_attendance values(101,'2023-12-04','P');
+insert into employee_attendance values(101,'2023-12-05','L');
+
+insert into employee_attendance values(102,'2023-12-01','P');
+insert into employee_attendance values(102,'2023-12-02','P');
+insert into employee_attendance values(102,'2023-12-03','P');
+insert into employee_attendance values(102,'2023-12-04','P');
+insert into employee_attendance values(102,'2023-12-05','P');
+
+insert into employee_attendance values(103,'2023-12-01','A');
+insert into employee_attendance values(103,'2023-12-02','P');
+insert into employee_attendance values(103,'2023-12-03','L');
+insert into employee_attendance values(103,'2023-12-04','P');
+insert into employee_attendance values(103,'2023-12-05','L');
+
+select emp_id,status,count(*) from employee_attendance
+group by emp_id,status
+
+select emp_id,status,count(*) from employee_attendance
+where month(date_of_attendance) = 12 and year(date_of_attendance)=2023
+group by emp_id,status having status='P'
+
+order by count(*) desc
+limit 1

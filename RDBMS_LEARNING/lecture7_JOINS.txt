@@ -37,10 +37,41 @@ country on state.country_code=country.code
 where country.name="USA" and employee.gender='F'
 
 7. Get name of cities that has no employees
-//cannot achieve this
+//cannot achieve this BCZ Inner Join Finds Common Part
 select city.code,city.name from city inner join employee_address on
 city.code=employee_address.city_code
+//Solved Using Left Outer Join
+select * from city Left outer join employee_address on 
+city.code=employee_address.city_code 
+where 	employee_address.city_code is null
 
 8. Get emp_id and name of all employee whose addr is of only 2 lines
+select employee.emp_id,employee.first_name,employee.last_name from employee
+inner join employee_address on employee.emp_id=employee_address.emp_id
+where (employee_address.line1 is not null and employee_address.line2 is not null
+and employee_address.line3 is null)
+
 9. Get emp_id and name of all employee whose addr is of only 1 lines
+select employee.emp_id,employee.first_name,employee.last_name from employee
+inner join employee_address on employee.emp_id=employee_address.emp_id
+where (employee_address.line1 is not null and employee_address.line2 is null
+and employee_address.line3 is null)
+
 10. Get emp_id and name of all employee whose addr is of only 2 lines and Country=India
+//0 Records
+select employee.emp_id,employee.first_name,employee.last_name,country.name from employee
+inner join employee_address on employee.emp_id=employee_address.emp_id
+inner join city on employee_address.city_code=city.code
+inner join state on city.state_code=state.code
+inner join country on state.country_code=country.code
+where (employee_address.line1 is not null and employee_address.line2 is not null
+and employee_address.line3 is null and country.name="India")
+-------------------------------------
+select employee.emp_id,employee.first_name,employee.last_name,country.name,
+employee_address.line1,employee_address.line2,employee_address.line3
+from employee
+inner join employee_address on employee.emp_id=employee_address.emp_id
+inner join city on employee_address.city_code=city.code
+inner join state on city.state_code=state.code
+inner join country on state.country_code=country.code
+where (employee_address.line3 is null and country.name="India")

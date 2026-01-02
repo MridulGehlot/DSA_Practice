@@ -1,0 +1,73 @@
+create table employee_salary
+(
+emp_id int primary key,
+basic_salary int not null,
+hra int not null,
+foreign key (emp_id) references employee(emp_id)
+);
+
+insert into employee_salary values(101,600000,50000);
+insert into employee_salary values(102,650000,55000);
+insert into employee_salary values(103,450000,45000);
+insert into employee_salary values(104,480000,50000);
+insert into employee_salary values(105,700000,95000);
+insert into employee_salary values(106,645000,55000);
+insert into employee_salary values(107,685000,95000);
+insert into employee_salary values(108,425000,41000);
+insert into employee_salary values(108,375000,49000);
+
+select employee.emp_id,employee.first_name,employee.last_name,
+department.code,department.name as "Department",employee_salary.basic_salary
+from employee
+inner join department on employee.department_code=department.code
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+order by employee.emp_id
+
+select max(basic_salary) from employee_salary
+
+//person with max salary (Only Person from employee table no join mean no salary in o/p)
+select * from employee where emp_id = (select emp_id from employee_salary where basic_salary=(select max(basic_salary) from employee_salary))
+
+//Employees getting maximum salary (Inner join)
+select employee.emp_id,employee.first_name,employee.last_name,employee_salary.basic_salary from employee
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+and employee_salary.basic_salary in (select max(basic_salary) from employee_salary)
+
+//getting max hra same above just replace
+select employee.emp_id,employee.first_name,employee.last_name,employee_salary.hra from employee
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+and employee_salary.hra in (select max(hra) from employee_salary)
+
+//count such employees
+select count(*) from employee
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+and employee_salary.hra in (select max(hra) from employee_salary)
+//min hra and salary
+
+---------------------------------------------------------------------------
+//Department wise how many salaries are distributed
+<!-- My Try
+select department.code,department.name,sum(employee_salary.basic_salary) as "Department" from department 
+inner join employee on employee.department_code=department.code
+inner join employee_salary on employee_salary.emp_id=employee.emp_id
+group by employee_salary
+-->
+
+select department.code,department.name as "Department",sum(employee_salary.basic_salary)
+from employee
+inner join department on employee.department_code=department.code
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+group by department.code,department.name
+order by employee.department_code
+
+// if want to imply a condition (do not use where) Having is used
+//wrong -> where sum(employee_salary.basic_salary)>1000000
+//right -> having sum(employee_salary.basic_salary)>1000000
+
+//Max salary in every department
+select department.code,department.name as "Department",max(employee_salary.basic_salary)
+from employee
+inner join department on employee.department_code=department.code
+inner join employee_salary on employee.emp_id=employee_salary.emp_id
+group by department.code,department.name
+order by employee.department_code

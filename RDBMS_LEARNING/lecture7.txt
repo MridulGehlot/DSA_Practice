@@ -53,8 +53,20 @@ select emp_id,first_name,last_name from employee where emp_id in
 (select emp_id from employee_address where line3 is null and line2 is null)
 
 10. Get emp_id and name of all employee whose addr is of only 2 lines and Country=India
+//This Query is wrong 
+// ANS = 0 Records
 select emp_id,first_name,last_name from employee where emp_id in 
 (select emp_id from employee_address where line3 is null and city_code in 
+(select code from city where state_code in 
+(select code from state where country_code in 
+(select code from country where name='India')
+)
+)
+)
+
+//correct query
+select emp_id,first_name,last_name from employee where emp_id in 
+(select emp_id from employee_address where line3 is null and line2 in not null and line1 is not null and city_code in 
 (select code from city where state_code in 
 (select code from state where country_code in 
 (select code from country where name='India')
