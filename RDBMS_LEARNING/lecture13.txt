@@ -1,0 +1,51 @@
+//Stored Procedures and Functions
+create table student
+(
+roll_number int primary key,
+name char(50) not null
+);
+create table student_contact_number
+(
+roll_number int primary key,
+contact_number char(15) not null,
+foreign key (roll_number) references student(roll_number)
+);
+delimiter //
+create procedure add_student(in roll_number int,in name char(50),in contact_number char(15))
+begin
+if roll_number<=0 then
+signal sqlstate "45000" set MESSAGE_TEXT="Roll Number Should be greater than 0";
+end if;
+if name is null then
+signal sqlstate "45000" set MESSAGE_TEXT="Name is Required";
+end if;
+insert into student values(roll_number,name);
+if contact_number is not null then
+insert into student_contact_number values(roll_number,contact_number);
+end if;
+end; //
+delimiter ;
+
+call add_student(1,"Ramesh Shastri","4567891230");
+call add_student(2,"Gopal Singh",null);
+
+select * from student left join student_contact_number on student.roll_number=student_contact_number.roll_number
+
+//Functions
+delimiter //
+create function is_indian_or_foreigner(b boolean) returns char(15) deterministic
+begin
+declare nn char(15);
+if b=true then
+set nn='Indian';
+else
+set nn='Foreigner';
+end if;
+return nn;
+end; //
+delimiter ;
+
+//
+select emp_id,first_name,last_name,is_indian_or_foreigner(is_indian) from employee
+//
+select is_indian_or_foreigner(true)

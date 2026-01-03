@@ -1,0 +1,112 @@
+#Triggers
+create table employee_attendance_summary
+(
+emp_id int not null,
+month int not null,
+year int not null,
+total_present int not null,
+total_absent int not null,
+total_leave int not null,
+primary key (emp_id,month,year),
+foreign key (emp_id) references employee(emp_id)
+);
+
+insert into employee_attendance_summary values(101,12,2023,0,0,0);
+insert into employee_attendance_summary values(102,12,2023,0,0,0);
+insert into employee_attendance_summary values(103,12,2023,0,0,0);
+insert into employee_attendance_summary values(104,12,2023,0,0,0);
+insert into employee_attendance_summary values(105,12,2023,0,0,0);
+insert into employee_attendance_summary values(106,12,2023,0,0,0);
+insert into employee_attendance_summary values(107,12,2023,0,0,0);
+insert into employee_attendance_summary values(108,12,2023,0,0,0);
+insert into employee_attendance_summary values(109,12,2023,0,0,0);
+
+Delimiter //
+
+create trigger employee_attendance_insert after insert on employee_attendance for each row
+Begin
+if new.status="P" or new.status="p"
+then
+update employee_attendance_summary set total_present=total_present+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+if new.status="A" or new.status="a"
+then
+update employee_attendance_summary set total_absent=total_absent+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+if new.status="L" or new.status="l"
+then
+update employee_attendance_summary set total_leave=total_leave+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+End; //
+
+Delimiter;
+
+//delete all attendance records
+//re insert all
+
+#Trigger for delete
+Delimiter //
+create trigger employee_attendance_delete after delete on employee_attendance for each row
+Begin
+if old.status="P" or old.status="p"
+then
+update employee_attendance_summary set total_present=total_present-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+if old.status="A" or old.status="a"
+then
+update employee_attendance_summary set total_absent=total_absent-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+if old.status="L" or old.status="l"
+then
+update employee_attendance_summary set total_leave=total_leave-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+End; //
+Delimiter ;
+
+#Trigger for Update
+Delimiter //
+create trigger employee_attendance_update after update on employee_attendance for each row
+Begin
+if old.status="P" or old.status="p"
+then
+update employee_attendance_summary set total_present=total_present-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+if old.status="A" or old.status="a"
+then
+update employee_attendance_summary set total_absent=total_absent-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+if old.status="L" or old.status="l"
+then
+update employee_attendance_summary set total_leave=total_leave-1 where emp_id=old.emp_id and month(old.date_of_attendance)=month and year(old.date_of_attendance)=year;
+end if;
+
+if new.status="P" or new.status="p"
+then
+update employee_attendance_summary set total_present=total_present+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+if new.status="A" or new.status="a"
+then
+update employee_attendance_summary set total_absent=total_absent+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+if new.status="L" or new.status="l"
+then
+update employee_attendance_summary set total_leave=total_leave+1 where emp_id=new.emp_id and month(new.date_of_attendance)=month and year(new.date_of_attendance)=year;
+end if;
+
+End; //
+Delimiter ;
+
+//If want to drop
+-- drop trigger employee_attendace_insert
+
+//After / Before both exists in triggers
+signal sqlstate 45000 MESSAGE_TEXT
+
+delimiter //
+create trigger employee_attendance_insert_validation before insert on employee_attendance for each row
+begin
+if new.status!="P" and new.status!="p" and new.status!="A" and new.status!="a" and new.status!="l" and new.status!="L" then
+signal sqlstate "45000" set MESSAGE_TEXT="Invalid status value it should be P/A/L";
+end if;
+end; //
+delimiter ;
