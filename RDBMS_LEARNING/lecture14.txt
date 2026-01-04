@@ -1,0 +1,96 @@
+//Self Join
+create table employee_boss
+(
+emp_id int not null,
+boss_emp_id int not null,
+primary key (emp_id,boss_emp_id),
+foreign key (emp_id) references employee(emp_id),
+foreign key (boss_emp_id) references employee(emp_id)
+);
+insert into employee_boss values(104,101);
+insert into employee_boss values(105,101);
+insert into employee_boss values(106,102);
+insert into employee_boss values(107,102);
+insert into employee_boss values(108,107);
+insert into employee_boss values(109,107);
+---------------------------------------------------------------------
+select e1.emp_id,e1.first_name,e1.last_name,e2.emp_id as "Boss id",
+e2.first_name,e2.last_name from employee e1
+inner join employee_boss
+on e1.emp_id=employee_boss.emp_id
+inner join employee e2
+on e2.emp_id=employee_boss.boss_emp_id 
+order by e1.emp_id;
+------------------------------------------------------------------
+//Best For Interview
+create table customer
+(
+code int primary key,
+name char(25) not null,
+reference_code int,
+foreign key (reference_code) references customer(code)
+);
+insert into customer values(1,"Mridul Gehlot",null);
+insert into customer values(2,"Tina Joshi",null);
+insert into customer values(3,"Ramesh Gupta",1);
+insert into customer values(4,"Sunil Grover",2);
+insert into customer values(5,"Rita Dey",1);
+insert into customer values(6,"Meena Roy",3);
+----------------------------------------------------------------
+select c1.code,c1.name,c2.name as "Referer" from customer c1 inner join
+customer c2 on c1.reference_code=c2.code order by c1.code
+----------------------------------------------------------------
+Procedure with out parameter
+Delimiter //
+create procedure get_employee_department(in employee_id int,out department_name char(25))
+begin
+select name into department_name from department where code=(select department_code from employee where emp_id=employee_id);
+end; //
+delimiter ;
+-----------------------------------------------------------------
+call get_employee_department(101,@dname);
+select @dname;
+-----------------------------------------------------------------
+#ROll Back and Commit
+set autocommit=0;
+insert into customer values(10,'ABCD',null);
+rollback;
+commit;
+
+delimiter //
+create procedure apply_increments(in increment int,in hra_factor int,in basic_salary_factor int)
+begin
+set autocommit=0;
+declare total_amount int;
+start transaction;
+update employee_salary set hra=hra+increment;
+select sum(hra) into total_amount from employee_salary
+if total_amount < hra_factor then
+update employee_salary set basic_salary=basic_salary+increment;
+end if;
+select sum(basic_salary+hra) into total_amount from employee_salary;
+if total_amount > basic_salary_factor then
+rollback;
+else
+commit;
+end if;
+set autocommit=1;
+end;
+delimiter ;
+-------------------------------------------------------------
+select distinct code from department
+----------------------------------------------------------------
+#Co Related Sub Query (Inner Query me Outer Table ka name)
+select c1.code,c1.name,(select name from customer where c1.reference_code=customer.code) as "Referr" from customer c1
+
+select employee.emp_id,employee.first_name,employee.last_name,employee.department_code,
+(select name from department where code=employee.department_code) as "Department" from
+employee 
+
+//All City of Employees
+select city.code,city.name from city where exists
+(select * from employee_address where employee_address.city_code=city.code)
+
+//All City of Which has no employees
+select city.code,city.name from city where not exists
+(select * from employee_address where employee_address.city_code=city.code)
