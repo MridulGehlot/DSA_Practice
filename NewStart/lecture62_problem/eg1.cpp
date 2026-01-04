@@ -2,22 +2,31 @@
 using namespace std;
 int main()
 {
+int flag[20]={0};
 int arr[20]={12,3,92,-3,76,54,12,93,78,45,56,23,89,51,20,88,30,44,62,10};
-int last;
-for(int i=0;i<=19;i++)
+int prev,e,f;
+e=0;
+while(e<=18)
 {
-bool flag=false;
-last=arr[i];
-for(int j=i+1;j<=19;j++)
+if(flag[e]) 
 {
-if(arr[j]>=last)
-{
-flag=true;
-cout<<last<<" ";
-last=arr[j];
+e++;
+continue;
 }
+prev=e;
+f=e+1;
+while(f<=19)
+{
+if(arr[f]>arr[prev])
+{
+cout<<arr[prev]<<" ";
+prev=f;
+flag[prev]=1;
 }
-if(flag)cout<<last<<endl;
+f++;
+}
+if(prev>e) cout<<arr[prev]<<endl;
+e++;
 }
 return 0;
 }
