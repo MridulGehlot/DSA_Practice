@@ -1,9 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-int main()
+queue<queue<pair<int,int>>> subSequencesOfMaxLength(vector<int> &arr)
 {
-int flag[10]={0};
-int arr[10]={76,12,92,-3,76,56,12,93,78,56};
+vector<int> flag(arr.size(),0);
 int prev,e,f,maxi,count;
 queue<queue<pair<int,int>>> ans;
 e=0;
@@ -43,6 +42,10 @@ q.push({prev,arr[prev]});
 ans.push(q);
 }
 }
+return ans;
+}
+void print(queue<queue<pair<int,int>>> ans)
+{
 //printing answer
 while(!ans.empty())
 {
@@ -52,9 +55,27 @@ while(!q.empty())
 {
 pair<int,int> p=q.front();
 q.pop();
-cout<<p.first<<" , "<<p.second<<endl;
+cout<<"("<<p.first<<") , "<<p.second<<"   ";
 }
 cout<<endl<<endl;
 }
+}
+int main()
+{
+vector<int> arr1={76,12,92,-3,76,56,12,93,78,56};
+vector<int> arr2={77,7,98,78,76,54,12,92,56,93};
+queue<queue<pair<int,int>>> sub1,sub2,ans;
+
+sub1=subSequencesOfMaxLength(arr1);
+sub2=subSequencesOfMaxLength(arr2);
+
+cout<<"Max Length Sub sequence of arr1 are : "<<endl;
+print(sub1);
+cout<<endl;
+cout<<"Max Length Sub sequence of arr2 are : "<<endl;
+print(sub2);
+cout<<endl;
+
+
 return 0;
 }
