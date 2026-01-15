@@ -1,0 +1,57 @@
+
+//DROPPED OUT IDEA
+
+#include<stdio.h>
+#include<stdbool.h>
+int main()
+{
+int val,count,sum,prev,prevCount,a,b,c;
+printf("Enter the value (should be >3) -> ");
+scanf("%d",&val);
+if(val<=3)
+{
+printf("INVALID VALUE\n");
+return 0;
+}
+count=0;
+count=val/10;
+sum=count*10;
+prev=-1;
+prevCount=-1;
+a=count;
+b=0;
+c=0;
+while(sum<val)
+{
+if(prev==sum)
+{
+sum-=10;
+count--;
+}
+else 
+{
+prevCount=count;
+prev=sum;
+}
+while((val-sum)>=5)
+{
+b++;
+sum+=5;
+count++;
+}
+while((val-sum)>=2)
+{
+c++;
+sum+=2;
+count++;
+}
+if(sum==val) break;
+else
+{
+sum=prev;
+count=prevCount;
+}
+}
+printf("Minimum %d Number of coins are required\n",count);
+return 0;
+}
