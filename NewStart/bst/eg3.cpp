@@ -1,5 +1,8 @@
 #include<stdio.h>
+#include<iostream>
+#include<stack>
 #include<stdlib.h>
+using namespace std;
 typedef struct _BSTNode
 {
 int data;
@@ -45,12 +48,31 @@ break;
 }
 }
 }
-void printLeft(BSTNode *root,int b)
+void inorder(BSTNode *root)
 {
-if(!root) return;
-printLeft(root->left,1);
-if(b) printf("%d ",root->data);
-printLeft(root->right,0);
+stack<BSTNode*> stk;
+BSTNode *t;
+t=root;
+while(t)
+{
+stk.push(t);
+t=t->left;
+}
+while(!stk.empty())
+{
+t=stk.top();
+stk.pop();
+printf("%d ",t->data);
+if(t->right) 
+{
+t=t->right;
+while(t)
+{
+stk.push(t);
+t=t->left;
+}
+}
+}
 }
 int main()
 {
@@ -59,7 +81,7 @@ insert(50);
 insert(175);
 insert(75);
 insert(200);
-printf("Printing Only Left Node Inorder Traversal Using Recurrsion\n");
-printLeft(root,0);
+printf("Printing Inorder Traversal Iterative\n");
+inorder(root);
 return 0;
 }

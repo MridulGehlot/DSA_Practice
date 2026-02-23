@@ -36,7 +36,7 @@ break;
 }
 else
 {
-if(t->right) t=t->left;
+if(t->left) t=t->left;
 else
 {
 t->left=n;
@@ -59,6 +59,7 @@ insert(50);
 insert(175);
 insert(75);
 insert(200);
+printf("Printing Inorder Traversal Using Recurrsion\n");
 inorder(root);
 return 0;
 }

@@ -68,7 +68,7 @@ lb=stack[top][0];
 ub=stack[top][1];
 top--;
 stack2[top2][0]=lb;
-stack2[top2][0]=ub;
+stack2[top2][1]=ub;
 top2++;
 pp=(lb+ub)/2;
 if(lb<pp)
