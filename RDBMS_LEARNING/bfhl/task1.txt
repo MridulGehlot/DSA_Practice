@@ -1,0 +1,144 @@
+--------- MY CODE -----------
+create table payments
+(
+payment_id int primary key,
+emp_id int not null,
+amount decimal(10,2) not null,
+payment_time time not null,
+foreign key (emp_id) references employee(emp_id)
+);
+create table employee
+(
+emp_id int primary key,
+first_name char(25) not null,
+last_name char(25) not null,
+dob date not null,
+gender char(1) not null,
+department_id int not null,
+foreign key (department) references department(department_id)
+);
+create table department
+(
+department_id int primary key,
+department_name char(25) not null
+);
+
+------ Ai ------
+CREATE TABLE DEPARTMENT (
+    DEPARTMENT_ID INT PRIMARY KEY,
+    DEPARTMENT_NAME VARCHAR(50)
+);
+
+CREATE TABLE EMPLOYEE (
+    EMP_ID INT PRIMARY KEY,
+    FIRST_NAME VARCHAR(50),
+    LAST_NAME VARCHAR(50),
+    DOB DATE,
+    GENDER VARCHAR(10),
+    DEPARTMENT INT,
+    FOREIGN KEY (DEPARTMENT) REFERENCES DEPARTMENT(DEPARTMENT_ID)
+);
+
+CREATE TABLE PAYMENTS (
+    PAYMENT_ID INT PRIMARY KEY,
+    EMP_ID INT,
+    AMOUNT DECIMAL(10,2),
+    PAYMENT_TIME TIMESTAMP,
+    FOREIGN KEY (EMP_ID) REFERENCES EMPLOYEE(EMP_ID)
+);
+
+
+
+---------- DATA --------------
+INSERT INTO DEPARTMENT VALUES
+(1, 'HR'),
+(2, 'Finance'),
+(3, 'Engineering'),
+(4, 'Sales'),
+(5, 'Marketing'),
+(6, 'IT');
+
+
+INSERT INTO EMPLOYEE VALUES
+(1, 'John', 'Williams', '1980-05-15', 'Male', 3),
+(2, 'Sarah', 'Johnson', '1990-07-20', 'Female', 2),
+(3, 'Michael', 'Smith', '1985-02-10', 'Male', 3),
+(4, 'Emily', 'Brown', '1992-11-30', 'Female', 4),
+(5, 'David', 'Jones', '1988-09-05', 'Male', 5),
+(6, 'Olivia', 'Davis', '1995-04-12', 'Female', 1),
+(7, 'James', 'Wilson', '1983-03-25', 'Male', 6),
+(8, 'Sophia', 'Anderson', '1991-08-17', 'Female', 4),
+(9, 'Liam', 'Miller', '1979-12-01', 'Male', 1),
+(10, 'Emma', 'Taylor', '1993-06-28', 'Female', 5);
+
+INSERT INTO PAYMENTS VALUES
+(1, 2, 65784.00, '2025-01-01 13:44:12.824'),
+(2, 4, 62736.00, '2025-01-06 18:36:37.892'),
+(3, 1, 69437.00, '2025-01-01 10:19:21.563'),
+(4, 3, 67183.00, '2025-01-02 17:21:57.341'),
+(5, 2, 66273.00, '2025-02-01 11:49:15.764'),
+(6, 5, 71475.00, '2025-01-01 07:24:14.453'),
+(7, 1, 70837.00, '2025-02-03 19:11:31.553'),
+(8, 6, 69628.00, '2025-01-02 10:41:15.113'),
+(9, 4, 71876.00, '2025-02-01 12:16:47.807'),
+(10, 3, 70098.00, '2025-02-03 10:11:17.341'),
+(11, 6, 67827.00, '2025-02-02 19:21:27.753'),
+(12, 5, 69871.00, '2025-02-05 17:54:17.453'),
+(13, 2, 72984.00, '2025-03-05 09:37:35.974'),
+(14, 1, 67982.00, '2025-03-01 06:09:51.983'),
+(15, 6, 70198.00, '2025-03-02 10:34:35.753'),
+(16, 4, 74998.00, '2025-03-02 09:27:26.162');
+
+
+-------------- TASK 1 -----------------
+select CONCAT(employee.first_name," ",employee.last_name) as "Name",
+year(now() - employee.dob) as "Age",department.department_name
+from employee
+inner join department on 
+employee.department=department.department_id
+where employee.emp_id in
+(select emp_id from payments where amount in
+(select max(amount) from payments where day(payment_time)!=1))
+
+
+select payments.amount,CONCAT(employee.first_name," ",employee.last_name) as "Name",
+(year(now())-year(employee.dob)) as "Age",department.department_name
+from employee
+inner join department on 
+employee.department=department.department_id
+inner join payments on 
+payments.emp_id=employee.emp_id
+where employee.emp_id in
+(select emp_id from payments where amount =
+(select max(amount) from payments where day(payment_time)!=1))
+
+
+SEMI CORRECT
+select payments.amount,CONCAT(employee.first_name," ",employee.last_name) as "Name",
+(year(now())-year(employee.dob)) as "Age",department.department_name
+from employee
+inner join department on 
+employee.department=department.department_id
+inner join payments on 
+payments.emp_id=employee.emp_id
+where employee.emp_id in
+(select emp_id from payments where amount =
+(select max(amount) from payments where day(payment_time)!=1))
+order by payments.amount desc
+limit 1
+
+insert into payments values(17,4,90000,'2026-01-01');
+This is now failed i got 90,000 as Result
+
+---- AI Answer ----
+SELECT 
+    p.AMOUNT AS SALARY,
+    CONCAT(e.FIRST_NAME, ' ', e.LAST_NAME) AS NAME,
+    TIMESTAMPDIFF(YEAR, e.DOB, CURDATE()) AS AGE,
+    d.DEPARTMENT_NAME
+FROM PAYMENTS p
+JOIN EMPLOYEE e ON p.EMP_ID = e.EMP_ID
+JOIN DEPARTMENT d ON e.DEPARTMENT = d.DEPARTMENT_ID
+WHERE DAY(p.PAYMENT_TIME) <> 1
+ORDER BY p.AMOUNT DESC
+LIMIT 1;
