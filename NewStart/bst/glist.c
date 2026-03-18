@@ -14,9 +14,10 @@ return node;
 void addToGList(void *ptr,GListNode **start,GListNode **end)
 {
 GListNode *node=createGListNode();
+node->ptr=ptr;
 if(*start==NULL)
 {
-*start=*end=ptr;
+*start=*end=node;
 }
 else
 {
@@ -25,7 +26,7 @@ node->prev=*end;
 *end=node;
 }
 }
-void createCopyOfGlist(GListNode *start,GListNode **targetStart,GListNode **targetEnd)
+void createCopyOfGList(GListNode *start,GListNode **targetStart,GListNode **targetEnd)
 {
 GListNode *t;
 *targetStart=*targetEnd=NULL;
