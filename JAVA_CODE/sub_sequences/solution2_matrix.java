@@ -34,10 +34,11 @@ if(i<x.length && j<y.length)
 {
 if(dp[i][j]+1==dp[i+1][j+1]) 
 {
+if(dp[i][j]==dp[i][j+1] && dp[i][j]==dp[i+1][j])
+{
 System.out.print(x[j]);
-System.out.print("i - "+i+" , j - "+j+"\n");
-i=i+1;
-j=j+1;
+//System.out.print("i - "+i+" , j - "+j+"\n");
+}
 }
 }
 }
