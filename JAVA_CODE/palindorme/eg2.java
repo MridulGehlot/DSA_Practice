@@ -1,3 +1,4 @@
+//This is padding Code and has errors 
 class psp
 {
 public static int expand(String s,int idx)
