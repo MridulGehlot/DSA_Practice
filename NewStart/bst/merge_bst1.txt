@@ -1,0 +1,31 @@
+merge(root1,root2,BSTNode **root3)
+{
+if(root1=NULL and root3=NULL)
+{
+*root3=NULL;
+return;
+}
+*root3=createNode();
+if(root2 is null)
+{
+(*root3)->data=root1->data;
+merge(root1->left,NULL,&((*root3)->left));
+merge(root1->right,NULL,&((*root3)->right));
+return;
+}
+if(root1 is null)
+{
+(*root3)->data=root2->data;
+merge(NULL,root2->left,&((*root3)->left));
+merge(NULL,root2->right,&((*root3)->right));
+return;
+}
+(*root3)->data=root1->data+root2->data;
+merge(root1->left,root2->left,&(*root3->left));
+merge(root1->right,root2->right,&(*root3->right));
+}
+create tree1,tree2,tree3
+i am assuming that tree 1/2/3 are 3 pointers
+meant to point to the root nodes of respective trees
+//tree3=NULL (always) not needed if the function assigns NuLL
+merge(tree1,tree2,&tree3)
