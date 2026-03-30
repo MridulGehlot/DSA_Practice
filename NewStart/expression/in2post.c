@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<stack.h>
+#include<mg_stack.h>
 int isOperator(char c)
 {
 return c=='+' || c=='-' || c=='*' || c=='/';
@@ -13,11 +13,12 @@ int getPrecedenceLevel(char op)
 {
 if(op=='*' || op=='/') return 2;
 if(op=='+' || op=='-') return 1;
+return 0;
 }
 void appendToPostfix(char c,char *pf,int *idx)
 {
 pf[*idx]=c;
-*idx++;
+(*idx)++;
 pf[*idx]='\0';
 }
 int main()
@@ -112,13 +113,16 @@ i++;
 } //if is operator
 } //infix main while loop ends
 
-while(!isStackEmpty())
+
+while(!isStackEmpty(stack))
 {
 m=(char *)popFromStack(stack,&succ);
 appendToPostfix(*m,postfix,&endIndex);
 free(m);
 }
 
-printf("Post Fix Expression\n %s",postfix);
+//destroyStack(stack);
+
+printf("Post Fix Expression\n%s",postfix);
 return 0;
 }
