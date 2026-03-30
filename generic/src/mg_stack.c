@@ -44,3 +44,10 @@ int isStackEmpty(Stack *stack)
 if(stack==NULL) return 1;
 return isListEmpty(stack->list);
 }
+
+void destroyStack(Stack *stack)
+{
+if(stack==NULL || stack->list==NULL) return;
+destroyList(stack->list);
+free(stack);
+}

@@ -12,5 +12,6 @@ void * popFromStack(Stack *stack,int *succ);
 void * elementAtTopOfStack(Stack *stack,int *succ);
 int getSizeOfStack(Stack *stack);
 int isStackEmpty(Stack *stack);
+void destroyStack(Stack *stack);
 
 #endif

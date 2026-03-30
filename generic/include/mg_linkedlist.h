@@ -27,7 +27,7 @@ void insertAt(int idx,SinglyLinkedList *list,void *data,int *succ);
 void * removeFromList(SinglyLinkedList *list,int *succ);
 
 //Clearing Lists
-void destroyList(SinglyLinkedList *list,int *succ);
+void destroyList(SinglyLinkedList *list);
 
 //getting size
 int isListEmpty(SinglyLinkedList *list);

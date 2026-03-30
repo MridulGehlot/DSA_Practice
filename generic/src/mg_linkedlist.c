@@ -104,15 +104,10 @@ return data;
 }
 
 //Clearing Lists
-void destroyList(SinglyLinkedList *list,int *succ)
+void destroyList(SinglyLinkedList *list)
 {
-*succ=FAILURE;
+if(list==NULL) return;
 SinglyLinkedListNode *node;
-if(list==NULL)
-{
-*succ=NULL_VALUE;
-return;
-}
 while(list->start!=NULL)
 {
 node=list->start;
@@ -121,7 +116,6 @@ free(node->ptr);
 free(node);
 }
 free(list);
-*succ=SUCCESS;
 }
 
 //getting size

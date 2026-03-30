@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<mg_stack.h>
-
 #include<mg_queue.h>
 
 typedef struct __element
@@ -38,11 +37,19 @@ int succ;
 addToQueue(queue,e,&succ);
 }
 
+int processExpression(int leftOperand,char oper,int rightOperand)
+{
+if(oper=='+') return leftOperand+rightOperand;
+if(oper=='*') return leftOperand*rightOperand;
+if(oper=='-') return leftOperand-rightOperand;
+if(oper=='/') return leftOperand/rightOperand;
+}
+
 int main()
 {
 char infix[101];
 Element *e;
-int i,succ,number;
+int i,succ,number,result,leftOperand,rightOperand;
 char *m;
 char elem;
 printf("Enter Infix Expression : \n");
@@ -111,13 +118,37 @@ m=(char *)popFromStack(stack,&succ);
 appendOperatorToPostfix(queue,*m);
 free(m);
 }
+
+//processing the result
+char oper;
 while(!isQueueEmpty(queue))
 {
 e=(Element *)removeFromQueue(queue,&succ);
-if(e->oper==' ') printf("%d ",e->number);
-else printf("%c ",e->oper);
-free(e);
+if(e->oper==' ') //the structure represents a number
+{
+pushOnStack(stack,(void *)e,&succ);
 }
+else
+{
+oper=e->oper;
+free(e);
+e=(Element *)popFromStack(stack,&succ);
+rightOperand=e->number;
+free(e);
+e=(Element *)popFromStack(stack,&succ);
+leftOperand=e->number;
+free(e);
+result=processExpression(leftOperand,oper,rightOperand);
+e=(Element *)malloc(sizeof(Element));
+e->oper=' ';
+e->number=result;
+pushOnStack(stack,(void *)e,&succ);
+}
+}
+e=(Element *)popFromStack(stack,&succ);
+result=e->number;
+free(e);
+printf("Asnwer %d \n",result);
 destroyStack(stack);
 destroyQueue(queue);
 return 0;
