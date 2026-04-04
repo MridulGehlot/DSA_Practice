@@ -1,19 +1,12 @@
-#ifndef __mg_heap
-#define __mg_heap
+#include<mg_heap.h>
 #include<mg_error.h>
 #include<stdlib.h>
-
-typedef struct __heap
-{
-void **collection;
-int size,capacity;
-int (*cmp)(void *,void *);
-}Heap;
 
 //functions
 Heap * createHeap(int (*ptr2func)(void *,void *),int *succ)
 {
 *succ=FAILURE;
+if(ptr2func==NULL) return NULL;
 Heap *heap=(Heap *)malloc(sizeof(Heap));
 if(heap==NULL) return NULL;
 heap->collection=(void **)malloc(sizeof(void *)*10);
@@ -28,14 +21,29 @@ heap->cmp=ptr2func;
 *succ=SUCCESS;
 return heap;
 }
-void heapfiy(Heap *heap)
+void floatChildToTop(Heap *heap)
 {
-//logic to heapify
+//logic to float child to top
+int ci,ri;
+void *g;
+ci=heap->size-1;
+while(ci>0)
+{
+ri=(ci-1)/2;
+if(heap->cmp(heap->collection[ci],heap->collection[ri])!=0) // !=0 means success function return true;
+{
+g=heap->collection[ci];
+heap->collection[ci]=heap->collection[ri];
+heap->collection[ri]=g;
+ci=ri;
+}
+else break;
+}
 }
 void insert(Heap *heap,void *data,int *succ)
 {
 *succ=FAILURE;
-if(size==capacity)
+if(heap->size==heap->capacity)
 {
 //reallocate Memory
 void **tmp;
@@ -43,17 +51,45 @@ heap->capacity=heap->capacity*2;
 tmp=(void **)realloc(heap->collection,sizeof(void *)*heap->capacity);
 heap->collection=tmp;
 }
-heap->collection[size++]=data;
-heapify(heap);
+heap->collection[heap->size++]=data;
+floatChildToTop(heap);
 *succ=SUCCESS;
 }
-void * remove(Heap *heap,int &succ)
+void heapify(Heap *heap)
+{
+int ri,lastIndex,lci,rci,sci;
+void *g;
+ri=0;
+lastIndex=heap->size-1;
+while(ri<lastIndex)
+{
+lci=(2*ri)+1;
+rci=lci+1;
+if(lci>lastIndex) break;
+if(rci>lastIndex) sci=lci;
+else
+{
+if(heap->cmp(heap->collection[lci],heap->collection[rci])!=0) sci=lci;
+else sci=rci;
+}
+//now we found sci
+if(heap->cmp(heap->collection[sci],heap->collection[ri])!=0) //cmp returns true
+{
+g=heap->collection[ri];
+heap->collection[ri]=heap->collection[sci];
+heap->collection[sci]=g;
+ri=sci;
+}
+else break;
+} //ri<lastIndex loop
+}
+void * removeFromHeap(Heap *heap,int *succ)
 {
 *succ=FAILURE;
 if(heap==NULL || heap->collection==NULL || heap->size==0) return NULL;
 void *data;
-memcpy(data,(void *)heap->collection[0],sizeof(void *));
-memcpy(heap->collection[0],(void *)heap->collection[size-1],sizeof(void *));
+data=heap->collection[0];
+heap->collection[0]=heap->collection[heap->size-1];
 heap->size--;
 heapify(heap);
 *succ=SUCCESS;
@@ -69,5 +105,3 @@ int getSizeOfHeap(Heap *heap)
 if(heap==NULL) return 0;
 return heap->size;
 }
-
-#endif
