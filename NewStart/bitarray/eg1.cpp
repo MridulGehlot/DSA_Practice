@@ -1,5 +1,5 @@
 #include<iostream>
-#include<string.h>
+#include<cstring>
 using namespace std;
 class BitArray
 {
@@ -59,8 +59,10 @@ BitArray & BitArray::operator=(BitArray &&other) //move assignment operation
 {
 if(this==&other) return *this;
 delete[] ptr;
+ptr=other.ptr;
 _size=other._size;
-ptr=other.ptr
+other.ptr=NULL;
+other._size=0;
 return *this;
 }
 bool BitArray::isOn(unsigned int index) const
@@ -109,4 +111,4 @@ for(int i=0;i<b.size();i++)
 cout<<(b.isOn(i)?1:0)<<endl;
 }
 return 0;
-}
+}	
