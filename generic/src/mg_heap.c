@@ -43,13 +43,15 @@ else break;
 void insert(Heap *heap,void *data,int *succ)
 {
 *succ=FAILURE;
+if(heap==NULL || heap->collection==NULL) return;
 if(heap->size==heap->capacity)
 {
 //reallocate Memory
-void **tmp;
-heap->capacity=heap->capacity*2;
-tmp=(void **)realloc(heap->collection,sizeof(void *)*heap->capacity);
-heap->collection=tmp;
+int newCapacity = heap->capacity * 2;
+void **tmp = realloc(heap->collection, sizeof(void *) * newCapacity);
+if(tmp == NULL) return;
+heap->collection = tmp;
+heap->capacity = newCapacity;
 }
 heap->collection[heap->size++]=data;
 floatChildToTop(heap);
@@ -93,6 +95,20 @@ heap->collection[0]=heap->collection[heap->size-1];
 heap->size--;
 heapify(heap);
 *succ=SUCCESS;
+//adjust DMA size
+if(heap->size<heap->capacity/4 && heap->capacity>10)
+{
+heap->capacity=heap->capacity/2;
+void **tmp;
+tmp=realloc(heap->collection,sizeof(void *)*heap->capacity);
+if(tmp==NULL)
+{
+heap->capacity*=2;
+return data;
+}
+heap->collection=tmp;
+}
+//Adjust DMA Ends Here
 return data;
 }
 int isHeapEmpty(Heap *heap)
