@@ -1,7 +1,7 @@
 #include<mg_sort.h>
 #include<stdlib.h>
 #include<string.h>
-void insertionSort(void *ptr,int lb,int ub,int es,int (*p2f)(void*,void*))
+void _insertionSort(void *ptr,int lb,int ub,int es,int (*p2f)(void*,void*))
 {
 void *block;
 block=malloc(es);
@@ -19,4 +19,8 @@ z--;
 memcpy(ptr+((z+1)*es),(const void *)block,es);
 y++;
 }
+}
+void insertionSort(void *arr,int size,int sizeOfElement,int (*p2f)(void*,void*))
+{
+_insertionSort(arr,0,size-1,sizeOfElement,p2f);
 }

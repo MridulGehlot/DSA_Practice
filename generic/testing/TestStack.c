@@ -13,7 +13,7 @@ x=(int *)malloc(sizeof(int));
 *x=i;
 pushOnStack(stack,(void *)x,&succ);
 }
-while(!isEmpty(stack))
+while(!isStackEmpty(stack))
 {
 x=(int *)popFromStack(stack,&succ);
 printf("%d ",*x);
