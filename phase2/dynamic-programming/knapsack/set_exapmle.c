@@ -111,6 +111,10 @@ element.weight-=items[i].weight;
 }
 } //main back track loop
 if(element.price!=0 || element.weight!=0) printf("Price : %d , Weight : %d \n",items[0].price,items[0].weight);
-
+for(int i=0;i<numberOfItems;i++)
+{
+free(masterSet[i].list);
+}
+free(masterSet);
 return 0;
 }
