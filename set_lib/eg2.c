@@ -162,6 +162,41 @@ t->size=s->size;
 return t;
 }
 
+char_set * union_of(char_set *a,char_set *b)
+{
+char_set * t=(char_set *)malloc(sizeof(char_set));
+t->size=0;
+int last,found;
+last=0;
+for(int i=0;i<26;i++)
+{
+t->hashmap[i]=a->hashmap[i];
+t->hashmap[i]=b->hashmap[i];
+t->order[i]=a->order[i];
+t->order[i]=b->order[i];
+if(t->order[i]!=-1) last=i;
+}
+last++;
+for(int i=0;i<26;i++)
+{
+if(t->hashmap[i]!=(char)0)
+{
+t->size++;
+found=0;
+for(int j=0;j<26;j++)
+{
+if(t->order[j]==i)
+{
+found=1;
+break;
+}
+}
+if(!found) t->order[last++]=i;
+}
+}
+return t;
+}
+
 #define add_to_char_set(ss,...) _process_and_add_to_char_set(ss,#__VA_ARGS__)
 
 int main()
@@ -189,6 +224,12 @@ for(x=0;x<get_char_set_size(t);x++)
 {
 printf("%c ",get_element_of_char_set(t,x)); //0 indexed
 }
+
+char_set * v=union_of(s,t);
+printf("Number of elements in set v(union) %d\n",get_char_set_size(v));
+print_char_set(v);
+
+destroy_char_set(v);
 destroy_char_set(t);
 destroy_char_set(s);
 return 0;
