@@ -121,3 +121,10 @@ int getSizeOfHeap(Heap *heap)
 if(heap==NULL) return 0;
 return heap->size;
 }
+
+void destroyHeap(Heap *heap)
+{
+if(heap==NULL) return;
+free(heap->collection);
+free(heap);
+}

@@ -152,7 +152,7 @@ char_set * clone_char_set(char_set *s)
 {
 if(!s) return s;
 int i;
-char_set *t=(char_set *)malloc(sizeof(char_set));
+char_set *t=construct_char_set();
 for(i=0;i<26;i++) 
 {
 t->hashmap[i]=s->hashmap[i];
@@ -164,7 +164,7 @@ return t;
 
 char_set * union_of(char_set *a,char_set *b)
 {
-char_set * t=(char_set *)malloc(sizeof(char_set));
+char_set * t=construct_char_set();
 t->size=0;
 int last,found;
 last=0;
@@ -199,7 +199,7 @@ return t;
 
 char_set * intersection_of(char_set *a,char_set *b)
 {
-char_set * t=(char_set *)malloc(sizeof(char_set));
+char_set * t=construct_char_set();
 t->size=0;
 int mini;
 for(int i=0;i<26;i++)
@@ -219,6 +219,30 @@ t->order[mini]=i;
 for(int i=t->size;i<26;i++) t->order[i]=-1;
 return t;
 }
+
+char_set * not_common(char_set *a,char_set *b)
+{
+char_set * t=construct_char_set();
+int mini;
+for(int i=0;i<26;i++)
+{
+if(a->hashmap[i]!=(char)0 && b->hashmap[i]!=(char)0) continue;
+else if(a->hashmap[i]!=(char)0 || b->hashmap[i]!=(char)0)
+{
+t->hashmap[i]=a->hashmap[i]!=(char)0?a->hashmap[i]:b->hashmap[i];
+t->size++;
+mini=26;
+for(int j=0;j<26;j++)
+{
+if(a->order[j]==i || b->order[j]==i) if(j<mini) mini=j;
+}
+t->order[mini]=i;
+}
+}
+for(int i=t->size;i<26;i++) if(t->order[i]<0) t->order[i]=-1;
+return t;
+}
+
 
 #define add_to_char_set(ss,...) _process_and_add_to_char_set(ss,#__VA_ARGS__)
 
@@ -248,8 +272,17 @@ for(x=0;x<get_char_set_size(t);x++)
 printf("%c ",get_element_of_char_set(t,x)); //0 indexed
 }
 
-char_set * v=intersection_of(s,t);
-printf("\nNumber of elements in set v(intersection) %d\n",get_char_set_size(v));
+char_set * v=not_common(s,t);
+/*
+printf("\n---------------------------\n");
+printf("size = %d\n",v->size);
+for(int i=0;i<26;i++)
+{
+printf("%d , %c ,,",v->order[i],v->hashmap[i]);
+}
+printf("\n---------------------------\n");
+*/
+printf("\nNumber of elements in set v(not common) %d\n",get_char_set_size(v));
 print_char_set(v);
 
 destroy_char_set(v);

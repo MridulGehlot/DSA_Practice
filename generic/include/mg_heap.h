@@ -14,5 +14,6 @@ void insert(Heap *heap,void *data,int *succ);
 void * removeFromHeap(Heap *heap,int *succ);
 int isHeapEmpty(Heap *heap);
 int getSizeOfHeap(Heap *heap);
+void destroyHeap(Heap *heap);
 
 #endif
