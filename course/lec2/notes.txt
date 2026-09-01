@@ -1,0 +1,3 @@
+Sorting - To arrange elements in an order (increasing/decreasing)
+
+1. Selection Sort (Choose the smallest element and place at index than index++)
