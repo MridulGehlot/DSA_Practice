@@ -27,21 +27,19 @@ scanf("%d",&collection[i]);
 
 
 //sorting logic
-int si; // smallest index
-int i,g;
-for(i=0;i<req-1;++i)
+int e,f,g;
+for(e=0;e<req-1;++e)
 {
-si=i;
-for(int j=i+1;j<req;++j)
+for(f=e+1;f<req;++f)
 {
-if(collection[j]<collection[si]) si=j;
+if(collection[f]<collection[e])
+{
+g=collection[f];
+collection[f]=collection[e];
+collection[e]=g;
 }
-//swap
-g=collection[si];
-collection[si]=collection[i];
-collection[i]=g;
 }
-
+}
 //ends here
 
 
