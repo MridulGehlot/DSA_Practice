@@ -166,57 +166,43 @@ t=t->next;
 printf("\n");
 }
 
+
 int main()
 {
-top=NULL;
-bottom=NULL;
-int ch,x,y,z;
+int stack[10];
+int x;
+int ch;
 do
 {
 printf("-----MENU-----\n");
-printf("1. Add Element At Top\n");
-printf("2. Add Element At Bottom\n");
-printf("3. Add Element At Index\n");
-printf("4. Remove Element At Top\n");
-printf("5. Remove Element At Bottom\n");
-printf("6. Remove Element At Index\n");
-printf("7. Print All Elements\n");
-printf("8. Exit\n");
-printf("Enter Your Choice : ");
+printf("1. Push\n");
+printf("2. Pop\n");
+printf("3. Print\n");
+printf("4. Exit\n");
+printf("Enter your Choice : ");
 scanf("%d",&ch);
 
-if(ch==1) 
+if(ch==1)
 {
-printf("Enter Number : ");
+printf("Enter a Number : ");
 scanf("%d",&x);
 addToTop(x);
 }
 else if(ch==2)
 {
-printf("Enter Number : ");
-scanf("%d",&x);
-addToBottom(x);
+if(nodes_count==0) printf("Stack is Empty, Cannot pop");
+else
+{
+printf("Poped : %d",top->data);
+removeFromTop();
+}
 }
 else if(ch==3)
 {
-printf("Enter Number : ");
-scanf("%d",&x);
-printf("Enter Index : ");
-scanf("%d",&y);
-addToIndex(x,y);
+printf("Stack View From Top to bottom ");
+print_all();
 }
-else if(ch==4) removeFromTop();
-else if(ch==5) removeFromBottom();
-else if(ch==6) 
-{
-printf("Enter Index : ");
-scanf("%d",&y);
-if(y<0 || y>=nodes_count) printf("Invalid Index\n");
-else removeFromIndex(y);
-}
-else if(ch==7) print_all();
-}while(ch!=8);
+}while(ch!=4);
 
-destroy_all_nodes();
 return 0;
 }
