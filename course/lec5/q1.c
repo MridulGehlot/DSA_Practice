@@ -1,22 +1,26 @@
-//Determine Duplicate Numbers return (True/False)
+// Find if any element is repeated in array 
+//or find existance duplicate element (T/F)
 #include<stdio.h>
 int main()
 {
-int arr[10]={12,45,78,56,89,23,50,60,40,50};
-int duplicate=0;
-for(int e=0;e<9;++e)
+int arr[5]={12,45,78,56,12};
+
+int found=0;
+for(int i=0;i<5-1;++i)
 {
-for(int f=e+1;f<10;++f)
+for(int j=i+1;j<5;++j)
 {
-if(arr[e]==arr[f])
+if(arr[i]==arr[j])
 {
-duplicate=1;
+found=1;
 break;
 }
 }
-if(duplicate) break;
+if(found) break;
 }
-if(duplicate) printf("Duplicates Elements Exists");
-else printf("All elements in array are unique\n");
+
+if(found) printf("Duplicate Elements Exsits\n");
+else printf("All Elements in array are unique\n");
+
 return 0;
 }

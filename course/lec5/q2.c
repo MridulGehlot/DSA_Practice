@@ -1,30 +1,43 @@
 /*
-Find Missing Number in an array of N Elements 
-Where All Elements are Distinct
+Find Missing NUmber in a list
+n = 5 (0-5)
+total = n+1 (0,1,2,4,3,5)
 
-n=5 (range 0-5) [0,1,2,3,4,5] n+1 elements
-
-Approaches : 
-1. Sort
+Approaches ->
+1. Sort & Compare Index
 2. Sum 
-3. Bitwise XOR
-5^5=0
-0^5=5
+n range = (0-n)
+0 1 2   n*(n+1)/2;
 
+3. XOR
+both same -> 0
+else -> 1
+
+5^5 = 0
+0^5 = 5
+1^2 = 3
 */
 #include<stdio.h>
 int main()
 {
-int arr[5]={0,1,4,5,3};
-int missing=0;
+int arr[5]={1,2,3,4,5};
+
+/*
+int sum=0;
+for(int i=0;i<5;++i) sum+=arr[i];
+int totalSum = 5*(5+1)/2;
+printf("Missing Element is %d\n",totalSum-sum);
+*/
+
+int val=0;
 for(int i=0;i<5;++i)
 {
-missing=missing^i;
-missing^=arr[i];
+val^=i;
+val^=arr[i];
 }
-missing^=5;
+val^=5;
 
-printf("Missing element is %d\n",missing);
+printf("Missing Element is %d\n",val);
 
 return 0;
 }
