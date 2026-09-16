@@ -1,0 +1,9 @@
+1. Determine Loop 
+2. Middle Node
+3. Palindromic
+4. Remove Elements From List
+5. Reverse a list
+6. Remove Duplicate Items From Sorted List
+7. Merge 2 Sorted List
+
+Time -> 7 Days (1 Week)

@@ -1,5 +1,6 @@
 /*
 Find Missing NUmber in a list
+where all number are (distinct)
 n = 5 (0-5)
 total = n+1 (0,1,2,4,3,5)
 
